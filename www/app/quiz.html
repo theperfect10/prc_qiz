@@ -70,34 +70,39 @@
             }
             
             function loadQuestion() {
-                if (questionIndex >= 10) {
-                    showResult();
-                    return;
-                }
-                
-                const container = document.getElementById("container");
-                container.innerHTML = "";
-                
-                const questionData = questions[questionIndex];
-                const questionElement = document.createElement("h2");
-                questionElement.textContent = questionData.question;
-                container.appendChild(questionElement);
-                
-                questionData.options.forEach(option => {
-                    const button = document.createElement("button");
-                    button.textContent = option;
-                    button.classList.add("option");
-                    button.addEventListener("click", function() {
-                        if (option === questionData.correct_answer) {
-                            score++;
-                        }
-                        questionIndex++;
-                        loadQuestion();
-                    });
-                    container.appendChild(button);
-                });
+    if (questionIndex >= 10) {
+        showResult();
+        return;
+    }
+
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+
+    const questionData = questions[questionIndex];
+    const questionElement = document.createElement("h2");
+    questionElement.textContent = questionData.question;
+    container.appendChild(questionElement);
+
+    questionData.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.classList.add("option");
+        button.addEventListener("click", function () {
+            const email = sessionStorage.getItem("email"); // Assume email is stored in session
+            if (option === questionData.correct_answer) {
+                score++;
             }
-            
+            questionIndex++;
+
+            // Save result after each answer
+            saveResult(email, questionIndex, timeLeft);
+
+            loadQuestion();
+        });
+        container.appendChild(button);
+    });
+}
+      
             function showResult() {
                 clearTimeout(timer); // Stop timer
                 const container = document.getElementById("container");
@@ -194,6 +199,33 @@ async function enterFullscreen() {
 
 function alertUser(message) {
     console.log(message); // Replace with on-screen notification or toast
+}
+window.onload = function () {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+    //   alert('You must log in to access this page.');
+      window.location.href = 'login.html'; // Redirect to the login page
+    }
+  };
+  function saveResult(email, questionNumber, timeRemaining) {
+    fetch("../backend/result.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, questionNumber, timeRemaining }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error("Error saving result:", data.error);
+        } else {
+            console.log(data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Network error:", error);
+    });
 }
 
 monitorUser();

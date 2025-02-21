@@ -49,5 +49,12 @@
     function start(){
         window.location.href='quiz.html'
     }
+    window.onload = function () {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+    //   alert('You must log in to access this page.');
+      window.location.href = 'login.html'; // Redirect to the login page
+    }
+  };
 </script>
 </html>

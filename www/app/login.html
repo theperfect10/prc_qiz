@@ -58,9 +58,9 @@
                     <p>Please login to your account</p>
 
                     <div data-mdb-input-init class="form-outline mb-4">
-                      <input type="email" id="form2Example11" class="form-control"
-                        placeholder="Phone number or email address" />
-                      <label class="form-label" for="form2Example11">Username</label>
+                      <input type="email" name="email"  id="email" class="form-control"
+                        placeholder="Enter reggistered email" />
+                      <label class="form-label" for="email"></label>
                     </div>
 
                     <button type="button" class="btn btn-outline-secondary w-100 mb-2" id="openCameraButton"
@@ -223,6 +223,7 @@ window.onload = function () {
       try {
         // Capture the user's face from the video stream
         loadingOverlay.style.display = 'flex'; // Show loading overlay
+        const email = document.getElementById('email').value
 
         const options = new faceapi.TinyFaceDetectorOptions({
           inputSize: 416, // Higher size for better accuracy
@@ -247,7 +248,7 @@ window.onload = function () {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         // Get the stored image descriptor
-        const storedImagePath = '../../uploads/onkar.lagad@paexskin.com.jpg'; // Update this path
+        const storedImagePath = '../../uploads/'+ email; // Update this path
         const storedDescriptor = await getLocalImageDescriptor(storedImagePath);
 
         // Compare the current descriptor with the stored descriptor
@@ -256,6 +257,8 @@ window.onload = function () {
         if (isMatch) {
           // alert('Login successful! Faces match.');
           // Redirect to a new page or perform other login actions
+          sessionStorage.setItem('isLoggedIn', 'true');
+sessionStorage.setItem('email', email);
           window.location.href = 'instruction.html';
         } else {
           alert('Login failed. Faces do not match.');
@@ -368,6 +371,14 @@ context.drawImage(video, 0, 0, canvas.width, canvas.height);
         modal.hide();
       }, "image/png");
     });
+    window.onload = function () {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (isLoggedIn) {
+    //   alert('You must log in to access this page.');
+    sessionStorage.clear();
+    }else{
+    }
+  };
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
