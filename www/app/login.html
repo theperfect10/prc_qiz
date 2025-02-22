@@ -53,7 +53,7 @@
                     <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
                   </div>
                   <!-- Success Message: Will show if 'msg=success' is passed in the URL -->
-                  <div id="successMessage" class="success-message"></div>
+                  <div id="successMessage" class="alert alert-success alert-dismissible fade show"></div>
                   <form>
                     <p>Please login to your account</p>
 
@@ -75,6 +75,7 @@
                       </button>
                     </div>
                     <div class="text-center pt-1 mb-5 pb-1">
+                      <div id="errorMessage" class="alert alert-error alert-dismissible fade show"></div>
                       <button data-mdb-button-init data-mdb-ripple-init
                         class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" id="loginButton"
                         type="button">Log
@@ -156,10 +157,15 @@
   <script>
   const loadingOverlay = document.getElementById('loadingOverlay');
 
-window.onload = function () {
+    window.onload = function () {
       const urlParams = new URLSearchParams(window.location.search);
       const msg = urlParams.get('msg');
-
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      if (isLoggedIn) {
+    //   alert('You must log in to access this page.');
+    sessionStorage.clear();
+    }else{
+    }
       if (msg === 'success') {
         document.getElementById('successMessage').textContent = "Registration successful!";
       }
@@ -261,8 +267,10 @@ window.onload = function () {
 sessionStorage.setItem('email', email);
           window.location.href = 'instruction.html';
         } else {
-          alert('Login failed. Faces do not match.');
-        }
+       var error =    document.getElementById('errorMessage');
+       error.textContent = "Login failed due to unknown reason!";
+error.style.display = 'block' 
+       }
       } catch (error) {
         console.error('Error during login:', error);
       }
@@ -371,14 +379,6 @@ context.drawImage(video, 0, 0, canvas.width, canvas.height);
         modal.hide();
       }, "image/png");
     });
-    window.onload = function () {
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-    if (isLoggedIn) {
-    //   alert('You must log in to access this page.');
-    sessionStorage.clear();
-    }else{
-    }
-  };
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
