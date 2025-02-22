@@ -248,7 +248,7 @@ window.onload = function () {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         // Get the stored image descriptor
-        const storedImagePath = '../../uploads/'+ email; // Update this path
+        const storedImagePath = '../../uploads/'+ email+'.jpg'; // Update this path
         const storedDescriptor = await getLocalImageDescriptor(storedImagePath);
 
         // Compare the current descriptor with the stored descriptor

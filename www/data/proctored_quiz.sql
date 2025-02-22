@@ -60,9 +60,10 @@ CREATE TABLE IF NOT EXISTS `recognition_attempt` (
 DROP TABLE IF EXISTS `result`;
 CREATE TABLE IF NOT EXISTS `result` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `userid` int NOT NULL,
-  `attempts` int NOT NULL,
-  `result` int NOT NULL,
+  `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `qindex` int NOT NULL,
+  `time_remaining` int NOT NULL,
+  `updated_at` INT(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4  ;
 
