@@ -170,7 +170,7 @@
                 try {
                     // Capture the user's face from the video stream
                     loadingOverlay.style.display = 'flex'; // Show loading overlay
-                    const email = sessionStorage.getItem('email').value
+                    const email = sessionStorage.getItem('email')
 
                     const options = new faceapi.TinyFaceDetectorOptions({
                         inputSize: 416, // Higher size for better accuracy
@@ -203,8 +203,6 @@
                     if (isMatch) {
                         // alert('Login successful! Faces match.');
                         // Redirect to a new page or perform other login actions
-                        sessionStorage.setItem('isLoggedIn', 'true');
-                        sessionStorage.setItem('email', email);
                         window.location.href = 'instruction.html';
                     } else {
                         alert('Login failed. Faces do not match.');
@@ -276,6 +274,12 @@
             </div>
         </div>
     </div>
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: green; z-index: 10050; justify-content: center; align-items: center; color: white; font-size: 1.5rem;" class="gradient-custom-2">
+        <div class="spinner-border text-light" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span style="margin-left: 10px;">Processing your face for submission...</span>
+      </div>
 </body>
 <script>
     Promise.all([
