@@ -53,14 +53,15 @@
                     <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
                   </div>
                   <!-- Success Message: Will show if 'msg=success' is passed in the URL -->
-                  <div id="successMessage" class="alert alert-success alert-dismissible fade show" style="display:none"></div>
+                  <div id="successMessage" class="alert alert-success alert-dismissible fade show" style="display:none">
+                  </div>
                   <form>
                     <p>Please login to your account</p>
 
                     <div data-mdb-input-init class="form-outline mb-4">
-                      <input type="email" name="email"  id="email" class="form-control"
+                      <input type="email" name="email" id="email" class="form-control"
                         placeholder="Enter reggistered email" />
-                        <div id="email-exists" class="text-danger" style="display:none">Email is not registered</div>
+                      <div id="email-exists" class="text-danger" style="display:none">Email is not registered</div>
                       <label class="form-label" for="email"></label>
                     </div>
 
@@ -87,8 +88,9 @@
 
                     <div class="d-flex align-items-center justify-content-center pb-4">
                       <p class="mb-0 me-2">Don't have an account?</p>
-                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-danger ml-2"
-                        onclick="window.location.href='registration.html';">Create new</button>
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init
+                        class="btn btn-outline-danger ml-2" onclick="window.location.href='registration.html';">Create
+                        new</button>
                     </div>
 
                   </form>
@@ -147,26 +149,28 @@
     </div>
   </div>
   <!-- Loading Overlay -->
-<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: green; z-index: 10050; justify-content: center; align-items: center; color: white; font-size: 1.5rem;" class="gradient-custom-2">
-  <div class="spinner-border text-light" role="status">
-    <span class="visually-hidden">Loading...</span>
+  <div id="loadingOverlay"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: green; z-index: 10050; justify-content: center; align-items: center; color: white; font-size: 1.5rem;"
+    class="gradient-custom-2">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <span style="margin-left: 10px;">Processing your face...</span>
   </div>
-  <span style="margin-left: 10px;">Processing your face...</span>
-</div>
 
 
   <script>
-  const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingOverlay = document.getElementById('loadingOverlay');
 
-window.onload = function () {
+    window.onload = function () {
       const urlParams = new URLSearchParams(window.location.search);
       const msg = urlParams.get('msg');
       const isLoggedIn = sessionStorage.getItem('isLoggedIn');
       if (isLoggedIn) {
-    //   alert('You must log in to access this page.');
-    sessionStorage.clear();
-    }else{
-    }
+        //   alert('You must log in to access this page.');
+        sessionStorage.clear();
+      } else {
+      }
       if (msg === 'success') {
         msg1 = document.getElementById('successMessage')
         msg1.textContent = "Registration successful!";
@@ -238,10 +242,10 @@ window.onload = function () {
           inputSize: 416, // Higher size for better accuracy
           scoreThreshold: 0.5 // Confidence threshold
         });
-          const canvasDetection = await faceapi.detectSingleFace(canvas, options)
-      .withFaceLandmarks()
-      .withFaceDescriptor();
-          
+        const canvasDetection = await faceapi.detectSingleFace(canvas, options)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
 
         if (!canvasDetection) {
           alert('No face detected. Ensure your face is visible in the camera.');
@@ -257,7 +261,7 @@ window.onload = function () {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         // Get the stored image descriptor
-        const storedImagePath = '../../uploads/'+ email+'.jpg'; // Update this path
+        const storedImagePath = '../../uploads/' + email + '.jpg'; // Update this path
         const storedDescriptor = await getLocalImageDescriptor(storedImagePath);
 
         // Compare the current descriptor with the stored descriptor
@@ -267,13 +271,13 @@ window.onload = function () {
           // alert('Login successful! Faces match.');
           // Redirect to a new page or perform other login actions
           sessionStorage.setItem('isLoggedIn', 'true');
-sessionStorage.setItem('email', email);
+          sessionStorage.setItem('email', email);
           window.location.href = 'instruction.html';
         } else {
-       var error =    document.getElementById('errorMessage');
-       error.textContent = "Login failed due to unknown reason!";
-error.style.display = 'block' 
-       }
+          var error = document.getElementById('errorMessage');
+          error.textContent = "Login failed due to unknown reason!";
+          error.style.display = 'block'
+        }
       } catch (error) {
         console.error('Error during login:', error);
       }
@@ -288,8 +292,8 @@ error.style.display = 'block'
 
       const context = canvas.getContext('2d');
       canvas.width = 320; // Smaller width
-canvas.height = (video.videoHeight / video.videoWidth) * 320; // Maintain aspect ratio
-context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.height = (video.videoHeight / video.videoWidth) * 320; // Maintain aspect ratio
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
       video.style.display = 'none';
       // context.drawImage(video, 0, 0, canvas.width, canvas.height);
       console.log(canvas);
@@ -382,38 +386,38 @@ context.drawImage(video, 0, 0, canvas.width, canvas.height);
         modal.hide();
       }, "image/png");
     });
-  document.getElementById('email').addEventListener('blur', async function () {
-            const email = this.value.trim();
+    document.getElementById('email').addEventListener('blur', async function () {
+      const email = this.value.trim();
 
-            if (email === '') {
-                alert('Please enter an email address.');
-                return;
-            }
+      if (email === '') {
+        alert('Please enter an email address.');
+        return;
+      }
 
-            try {
-                const response = await fetch('../backend/duplicate_user.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({ email: email }),
-                });
-
-                const data = await response.json();
-
-                if (!data.exists) {
-                    emailexists = true
-                    document.getElementById('loginButton').disabled = 'true';
-                    document.getElementById('email-exists').style.display = 'block';
-                } else {
-                    emailexists = false;
-                    document.getElementById('loginButton').disabled = false;
-                    document.getElementById('email-exists').style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error checking user:', error);
-            }
+      try {
+        const response = await fetch('../backend/duplicate_user.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({ email: email }),
         });
+
+        const data = await response.json();
+
+        if (!data.exists) {
+          emailexists = true
+          document.getElementById('loginButton').disabled = 'true';
+          document.getElementById('email-exists').style.display = 'block';
+        } else {
+          emailexists = false;
+          document.getElementById('loginButton').disabled = false;
+          document.getElementById('email-exists').style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Error checking user:', error);
+      }
+    });
 
   </script>
 
