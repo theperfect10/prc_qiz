@@ -19,8 +19,11 @@
             <div class="card-header text-center text-black">
                 <h4>Online Proctor Exam Important Instructions</h4>
             </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
+            <div class="card-body h-100"  >
+                <div class="alert alert-danger alert-dismissible fade show" id="quizStatus"></div>
+                <button id="registerButton" class="btn btn-outline-secondary " style="margin-top: 15px;background-color:linear-gradient(to right, #ff7e5f, #feb47b)">Go to Registration</button>
+
+                <ul class="list-group list-group-flush" id="quizInstructions" style="display: none;">
                     <li class="list-group-item">1. You are advised to use your own Laptop/PC/Mobile device with a stable internet connection (Min 1 Mbps) during the exam.</li>
                     <li class="list-group-item">2. Exam timing: -----. The exam will be auto-submitted once the time is over.</li>
                     <li class="list-group-item">3. The exam will be terminated if the examinee opens any other tab/window during the exam duration. Candidates appearing from mobile phones need to disable all notifications (WhatsApp, SMS, Email).</li>
@@ -37,7 +40,7 @@
                     <li class="list-group-item">14. The college has a zero-tolerance policy towards academic indiscipline.</li>
                 </ul>
             </div>
-            <div class="card-footer text-center">
+            <div class="card-footer text-center" id="startButton" style="display: none;">
                 <strong>Once your exam is suspended, you will not be able to restart it.</strong>
                 <br><br>
                 <h5 class="text-success">All the best!</h5>
@@ -55,10 +58,52 @@
     }
     window.onload = function () {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    const email = sessionStorage.getItem('email');
+
     if (!isLoggedIn) {
     //   alert('You must log in to access this page.');
       window.location.href = 'login.html'; // Redirect to the login page
     }
+      // Fetch quiz status for the logged-in user
+      fetch('../backend/check_result.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+        .then(response => response.json())
+        .then(data => {
+            const quizStatus = document.getElementById("quizStatus");
+            const quizInstructions = document.getElementById("quizInstructions");
+            const startButton = document.getElementById('startButton');
+
+            if (data.error) {
+                console.error("Error:", data.error);
+                quizStatus.textContent = "An error occurred while checking your quiz status.";
+            } else if (data.attempted) {
+                // Show already attempted message with the score
+                quizStatus.textContent = `You have already attempted the quiz. Your score is: ${data.score}`;
+                quizInstructions.style.display = "none"; // Hide the instructions
+                startButton.style.display = "none";
+            } else {
+                // Show instructions if quiz not attempted
+                quizStatus.textContent = "You can now start the quiz.";
+                quizInstructions.style.display = "block"; // Show instructions
+                startButton.style.display = "none";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
   };
+  document.getElementById('registerButton').addEventListener('click', ()=>{
+    sessionDestroy();
+    window.location.href = 'registration.html'
+  })
+  function sessionDestroy(){
+    sessionStorage.clear();
+  }
+  
 </script>
 </html>

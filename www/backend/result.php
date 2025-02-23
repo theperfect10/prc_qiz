@@ -3,33 +3,36 @@ require 'db_conn.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!isset($data['email']) || !isset($data['questionNumber']) || !isset($data['timeRemaining'])) {
+if (!isset($data['email']) || !isset($data['score'])) {
     echo json_encode(['error' => 'Invalid input.']);
     exit();
 }
 
 $email = $data['email'];
-$questionNumber = $data['questionNumber'];
-$timeRemaining = $data['timeRemaining'];
+$score = (int)$data['score'];
 
 try {
-    // Insert or update result
-    $query = "
-    INSERT INTO result (email, qindex, time_remaining, updated_at)
-    VALUES (?, ?, ?, NOW())
-    ON DUPLICATE KEY UPDATE
-    time_remaining = VALUES(time_remaining),
-    updated_at = NOW()
-";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sii", $email, $questionNumber, $timeRemaining);
 
-    if (!$stmt->execute()) {
-        throw new Exception("Execute failed: " . $stmt->error);
+    $query = "
+    INSERT INTO result (email, score, updated_at)
+    VALUES (?, ?, NOW())
+    ON DUPLICATE KEY UPDATE
+    score = VALUES(score), updated_at = NOW()
+    ";
+    $stmt = $conn->prepare($query);
+
+    if (!$stmt) {
+        throw new Exception("Preparation failed: " . $conn->error);
     }
 
-    echo json_encode(['message' => 'Result saved successfully.']);
-} catch (PDOException $e) {
+    $stmt->bind_param("si", $email, $score);
+
+    if (!$stmt->execute()) {
+        throw new Exception("Execution failed: " . $stmt->error);
+    }
+
+    echo json_encode(['message' => 'Result saved successfully!']);
+} catch (Exception $e) {
     echo json_encode(['error' => 'Database query failed: ' . $e->getMessage()]);
 }
 ?>

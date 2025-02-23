@@ -118,14 +118,14 @@
             }
         };
         let result = false
+        let questions = [];
+        let selectedAnswers = {};
 
+        let score = 0;
         document.addEventListener("DOMContentLoaded", function () {
-            let score = 0;
             let questionIndex = 0;
-            let questions = [];
             let timeLeft = 1200;
             let timer;
-            let selectedAnswers = {};
             const canvas = document.createElement('canvas');
 
             const submitButton = document.getElementById("submitButton");
@@ -222,9 +222,9 @@ document.getElementById('camera').style.display = 'none'
                 document.getElementById("prevButton").style.display = "none";
                 submitButton.style.display = "none";
 
-                document.getElementById("registerButton").addEventListener("click", function () {
-                    window.location.href = "registration.html";
-                });
+                // document.getElementById("registerButton").addEventListener("click", function () {
+                //     window.location.href = "registration.html";
+                // });
             }
             function stopVideoStream() {
                 if (video) {
@@ -234,6 +234,8 @@ document.getElementById('camera').style.display = 'none'
             }
 
             document.getElementById("nextButton").addEventListener("click", function () {
+                console.log(selectedAnswers);
+                
                 if (questionIndex < questions.length - 1) {
                     questionIndex++;
                     loadQuestion();
@@ -252,7 +254,20 @@ document.getElementById('camera').style.display = 'none'
                     // Capture the user's face from the video stream
                     loadingOverlay.style.display = 'flex'; // Show loading overlay
                     const email = sessionStorage.getItem('email')
-
+                    const finalScore = calculateScore();
+                    fetch('../backend/result.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, score })
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data); // "Result saved successfully!"
+                            // alert("Your result has been saved.");
+                        })
+                        .catch(error => console.error('Error saving result:', error));
                     const options = new faceapi.TinyFaceDetectorOptions({
                         inputSize: 416, // Higher size for better accuracy
                         scoreThreshold: 0.5 // Confidence threshold
@@ -335,6 +350,22 @@ document.getElementById('terminationModal').style.display = 'block';
                 })
                 .catch(error => console.error("Error loading JSON:", error));
         });
+        function calculateScore() {
+    score = 0; // Reset score
+
+    questions.forEach((question, index) => {
+        const correctAnswer = question.correct_answer;
+        const userAnswer = selectedAnswers[index]; // User's selected answer for this question
+
+        if (userAnswer === correctAnswer) {
+            score++; // Increment score if the answer matches
+        }
+    });
+
+    console.log("Final Score:", score);
+    return score; // Optional if you need the score elsewhere
+}
+
     </script>
 
 
@@ -407,12 +438,14 @@ document.getElementById('terminationModal').style.display = 'block';
             alert("Unable to access the camera.");
         });
     var count = 0;
-    document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") {
-            count++;
-            alert("Please stay on this tab to continue!");
-        }
-    });
+    if(!result){
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") {
+                count++;
+                alert("Please stay on this tab to continue!");
+            }
+        });
+    }
 
     // Automatically enter fullscreen when the page loads
     const modal = document.getElementById("fullscreenModal");
@@ -525,6 +558,13 @@ if(!result){
                 console.error("Network error:", error);
             });
     }
+    document.getElementById('registerButton').addEventListener('click', ()=>{
+    sessionDestroy();
+    window.location.href = 'registration.html'
+  })
+  function sessionDestroy(){
+    sessionStorage.clear();
+  }
 
     monitorUser();
 
