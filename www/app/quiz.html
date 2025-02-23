@@ -268,7 +268,7 @@ document.getElementById('camera').style.display = 'none'
 
 
                     if (!canvasDetection) {
-                        alert('No face detected. Ensure your face is visible in the camera.');
+                       showModal('No face detected. Ensure your face is visible in the camera.');
                         loadingOverlay.style.display = 'none'; // Show loading overlay
 document.getElementById('terminationModal').style.display = 'block';
                         return;
@@ -288,7 +288,7 @@ document.getElementById('terminationModal').style.display = 'block';
                     prevButton.style.display = 'none';
                         showResult();
                     } else {
-                        alert('Login failed. Faces do not match.');
+                        showModal('Login failed. Faces do not match.');
                     }
                 } catch (error) {
                     console.error('Error during login:', error);
@@ -381,6 +381,12 @@ document.getElementById('terminationModal').style.display = 'block';
           <button id="goToLogin" class="btn">Go to Login</button>
         </div>
       </div>
+      <div id="showMessageModal" class="modal" style="display: none; justify-content: center; align-items: center;">
+        <div class="modal-content gradient-custom-2">
+          <h2 id="showMsg"></h2>
+        </div>
+      </div>
+      
 </body>
 <script>
     Promise.all([
@@ -428,6 +434,12 @@ document.getElementById('terminationModal').style.display = 'block';
             console.error("Error entering fullscreen mode:", error);
         }
     });
+    function showModal(message) {
+    // Set the message in the modal body
+    document.getElementById("showMsg").textContent = message;
+document.getElementById('showMessageModal').style.display = 'flex';
+
+}
     async function monitorUser() {
         const video = document.getElementById('video');
 
@@ -437,12 +449,13 @@ document.getElementById('terminationModal').style.display = 'block';
         const checkFace = async () => {
             const detections = await faceapi.detectAllFaces(video, detectionOptions).withFaceLandmarks();
             console.log(detections);
+            document.getElementById('showMessageModal').style.display = 'none';
 
             if (detections.length === 0) {
-                alert("No face detected. Please stay in front of the camera!");
+                showModal("No face detected. Please stay in front of the camera!");
                 await retryCheck(); // Retry if no face is detected
             } else if (detections.length > 1) {
-                alert("Multiple faces detected. Please ensure you're alone!");
+                showModal("Multiple faces detected. Please ensure you're alone!");
                 await retryCheck(); // Retry if multiple faces are detected
             } else {
                 const face = detections[0].landmarks;
@@ -453,9 +466,10 @@ document.getElementById('terminationModal').style.display = 'block';
                 const videoWidth = video.videoWidth;
 
                 if (faceCenterX < videoWidth * 0.3 || faceCenterX > videoWidth * 0.7) {
-                    alert("You seem to be looking away. Please focus on the screen.");
+                    showModal("You seem to be looking away. Please focus on the screen.");
                     await retryCheck(); // Retry if the user is looking away
                 } else {
+                    document.getElementById('showMessageModal').style.display = "none";
                     console.log("User is properly visible in the camera.");
                     // User is properly visible, no further actions
                 }
