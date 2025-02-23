@@ -41,7 +41,11 @@
             background: linear-gradient(to right, #ff7e5f, #feb47b);
             color: black;
         }
-
+        .option.selected {
+    background: linear-gradient(to right, #245aee, #6e1daf, #1c6daf, #45adb4);
+    color: white;
+    border: 1px solid #00c6ff;
+}
         #timer {
             font-size: 24px;
             font-weight: bold;
@@ -164,13 +168,14 @@
                     button.classList.add("option");
                     if (selectedAnswers[questionIndex] === option) {
                         button.style.backgroundColor = "gold";
+                        button.classList.add("selected");
                     }
                     button.addEventListener("click", function () {
-                        selectedAnswers[questionIndex] = option;
-                        document.querySelectorAll(".option").forEach(btn => btn.style.backgroundColor = "white");
-                        button.style.backgroundColor = "gold";
-                    });
-
+        selectedAnswers[questionIndex] = option;
+        const buttons = container.querySelectorAll(".option");
+        buttons.forEach(btn => btn.classList.remove("selected"));
+        button.classList.add("selected");
+    });
                     container.appendChild(button);
                 });
 
@@ -342,11 +347,12 @@ document.getElementById('terminationModal').style.display = 'block';
             <h2 id="timer" class="mb-3">Time Left: 20:00</h2>
             <div class="quiz-container" style="background-color: white; color: black; border: 1px solid black;">
                 <div id="container"></div>
+                <button id="prevButton" class=" btn btn-secondary float-right">Previous</button>
+                <button id="nextButton" class="btn btn-primary">Next</button>
+                <button id="submitButton" class="btn btn-success" style="display: none;">Submit</button>
             </div>
             <div style="margin-top: 20px;">
-                <button id="prevButton" class="option">Previous</button>
-                <button id="nextButton" class="option">Next</button>
-                <button id="submitButton" class="option" style="display: none;">Submit</button>
+              
                 <div id="camera" class="float-right" style="background-color: white;">
                     <video id="video" class="post" autoplay></video>
                 </div>

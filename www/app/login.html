@@ -38,34 +38,29 @@
 <body class="gradient-custom-2">
   <section class="h-100">
     <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="row h-100 justify-content-center align-items-center">
         <div class="col-xl-10">
-          <div class="card rounded-3 text-black" style="
-    background-color: transparent;border : none">
+          <div class="card rounded-3 text-black" style="background-color: transparent; border: none;">
             <div class="row g-0">
-              <div class="col-lg-6" style="
-    background-color: white;">
+              <div class="col-lg-6" style="background-color: white; margin: auto;">
                 <div class="card-body p-md-5 mx-md-4">
-
                   <div class="text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                      style="width: 185px;" alt="logo">
-                    <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
+                    <h4 class="mt-1 mb-3 pb-1">Login</h4>
                   </div>
                   <!-- Success Message: Will show if 'msg=success' is passed in the URL -->
                   <div id="successMessage" class="alert alert-success alert-dismissible fade show" style="display:none">
                   </div>
                   <form>
                     <p>Please login to your account</p>
-
-                    <div data-mdb-input-init class="form-outline mb-4">
+  
+                    <div data-mdb-input-init class="form-outline mb-2">
                       <input type="email" name="email" id="email" class="form-control"
-                        placeholder="Enter reggistered email" />
+                        placeholder="Enter registered email" />
                       <div id="email-exists" class="text-danger" style="display:none">Email is not registered</div>
                       <label class="form-label" for="email"></label>
                     </div>
-
-                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" id="openCameraButton"
+  
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-1" id="openCameraButton"
                       data-bs-toggle="modal" data-bs-target="#cameraModal">
                       <i class="bi bi-camera"></i> Open Camera
                     </button>
@@ -76,15 +71,12 @@
                         Reset
                       </button>
                     </div>
-                    <div class="text-center pt-1 mb-5 pb-1">
+                    <div class="text-center pt-1 mb-3 pb-1">
                       <div id="errorMessage" class="alert alert-error alert-dismissible fade show"></div>
                       <button data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" id="loginButton"
-                        type="button">Log
+                        class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-2" id="loginButton" type="button">Log
                         in</button>
-
-                      <a class="text-muted" href="#!">Forgot password?</a>
-                    </div>
+                      </div>
 
                     <div class="d-flex align-items-center justify-content-center pb-4">
                       <p class="mb-0 me-2">Don't have an account?</p>
@@ -92,29 +84,9 @@
                         class="btn btn-outline-danger ml-2" onclick="window.location.href='registration.html';">Create
                         new</button>
                     </div>
-
+  
                   </form>
-
-                </div>
-              </div>
-              <div class="col-lg-6 d-flex align-items-center" style="background-color: transparent;">
-                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                  <h4 class="mb-4">Rules and Regulation</h4>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  
                 </div>
               </div>
             </div>
@@ -123,6 +95,7 @@
       </div>
     </div>
   </section>
+  
 
 
   <!-- Camera Modal -->
