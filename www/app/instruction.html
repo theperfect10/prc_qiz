@@ -17,27 +17,26 @@
     <div class="container mt-5">
         <div class="card mb-5">
             <div class="card-header text-center text-black">
-                <h4>Online Proctor Exam Important Instructions</h4>
+                <h4>Online Proctored Exam</h4>
             </div>
-            <div class="card-body h-100"  >
-                <div class="alert alert-danger alert-dismissible fade show" id="quizStatus"></div>
-                <button id="registerButton" class="btn btn-outline-secondary " style="margin-top: 15px;background-color:linear-gradient(to right, #ff7e5f, #feb47b)">Go to Registration</button>
+            <div class="card-body h-100"><h3 id="head" class="heading text-center">
+                Instructions
+            </h3>
+                <div class="alert alert-danger alert-dismissible fade show" style="display: none;" id="quizStatus"></div>
+                <button id="registerButton" class="btn btn-outline-secondary " style="margin-top: 15px;background-color:linear-gradient(to right, #ff7e5f, #feb47b);display: none">Go to Registration</button>
 
-                <ul class="list-group list-group-flush" id="quizInstructions" style="display: none;">
-                    <li class="list-group-item">1. You are advised to use your own Laptop/PC/Mobile device with a stable internet connection (Min 1 Mbps) during the exam.</li>
-                    <li class="list-group-item">2. Exam timing: -----. The exam will be auto-submitted once the time is over.</li>
-                    <li class="list-group-item">3. The exam will be terminated if the examinee opens any other tab/window during the exam duration. Candidates appearing from mobile phones need to disable all notifications (WhatsApp, SMS, Email).</li>
-                    <li class="list-group-item">4. Single click on the question will enlarge the image.</li>
-                    <li class="list-group-item">5. You can appear for the exam from Windows 7, 8, or 10 operating system.</li>
-                    <li class="list-group-item">6. Calculator is not allowed.</li>
-                    <li class="list-group-item">7. Rough sheets are allowed. Please have enough rough sheets by your side; during the exam, you are not allowed to deviate from your seat.</li>
-                    <li class="list-group-item">8. Your exam is proctored by a live proctor. The proctor may terminate your exam in case of any observed malpractice.</li>
-                    <li class="list-group-item">9. Use of headphones and mobiles isn’t permissible during the exam.</li>
-                    <li class="list-group-item">10. Each correct answer has a credit of --- marks and there is no negative marking.</li>
-                    <li class="list-group-item">11. The time duration for the exam is --- minutes.</li>
-                    <li class="list-group-item">12. No breaks are allowed during the exam.</li>
-                    <li class="list-group-item">13. If you try to open another window during an online exam, the system will show a warning message.</li>
-                    <li class="list-group-item">14. The college has a zero-tolerance policy towards academic indiscipline.</li>
+                <ul class="list-group list-group-flush" id="quizInstructions">
+                    <li class="list-group-item">1. You are advised to use your own Laptop/PC with a stable internet connection (Min 1 Mbps) during the exam.</li>
+                    <li class="list-group-item">2. The exam will be auto-submitted once the time is over and If the exam gets terminated for any reason, you cannot attempt the exam again.</li>
+                    <li class="list-group-item">3. You can appear for the exam from Windows 7, 8, or 10 operating system.</li>
+                    <li class="list-group-item">4. Calculator is not allowed.</li>
+                    <li class="list-group-item">5. Rough sheets are allowed. Please have enough rough sheets by your side; during the exam, you are not allowed to deviate from your seat.</li>
+                    <li class="list-group-item">6. Your movements will be monitored. If the user verification fails, your exam will be terminated</li>
+                    <li class="list-group-item">7. Use of headphones and mobiles isn’t permissible during the exam.</li>
+                    <li class="list-group-item">8. Each correct answer has a credit of 1 marks and there is no negative marking.</li>
+                    <li class="list-group-item">9. If you try to open another window during an online exam, the system will show a warning message.</li>
+                    <li class="list-group-item">10.The college has a zero-tolerance policy towards academic indiscipline.</li>
+    <li class="list-group-item">11.Once you have appeared for the exam, you cannot take it again</li>
                 </ul>
             </div>
             <div class="card-footer text-center" id="startButton" style="display: none;">
@@ -86,11 +85,14 @@
                 quizStatus.textContent = `You have already attempted the quiz. Your score is: ${data.score}`;
                 quizInstructions.style.display = "none"; // Hide the instructions
                 startButton.style.display = "none";
+                quizStatus.style.display ='block'
+                document.getElementById('head').style.display = 'none'
+                document.getElementById('registerButton').style.display = 'block'
             } else {
                 // Show instructions if quiz not attempted
-                quizStatus.textContent = "You can now start the quiz.";
                 quizInstructions.style.display = "block"; // Show instructions
-                startButton.style.display = "none";
+                startButton.style.display = "block";
+                
             }
         })
         .catch(error => {

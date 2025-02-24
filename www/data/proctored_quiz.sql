@@ -90,3 +90,5 @@ COMMIT;
 ALTER TABLE `user` CHANGE `firstname` `name` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE `result` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, CHANGE `qindex` `score` INT(11) NOT NULL;
 ALTER TABLE `result` CHANGE `time_remaining` `time_remaining` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `result` CHANGE `score` `score` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `result` CHANGE `score` `score` INT(11) NOT NULL DEFAULT '0';

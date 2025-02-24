@@ -114,7 +114,7 @@
                 //   alert('You must log in to access this page.');
                 window.location.href = 'login.html'; // Redirect to the login page
             } else {
-                // enterFullscreen();
+                // enterfFullscreen();
             }
         };
         let result = false
@@ -126,8 +126,22 @@
             let questionIndex = 0;
             let timeLeft = 1200;
             let timer;
-            const canvas = document.createElement('canvas');
+            const email = sessionStorage.getItem('email')
 
+            const canvas = document.createElement('canvas');
+            fetch('../backend/result.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data); // "Result saved successfully!"
+                            // alert("Your result has been saved.");
+                        })
+                        .catch(error => console.error('Error saving result:', error));
             const submitButton = document.getElementById("submitButton");
             function updateTimer() {
                 const timerElement = document.getElementById("timer");
@@ -222,9 +236,10 @@ document.getElementById('camera').style.display = 'none'
                 document.getElementById("prevButton").style.display = "none";
                 submitButton.style.display = "none";
 
-                // document.getElementById("registerButton").addEventListener("click", function () {
-                //     window.location.href = "registration.html";
-                // });
+                document.getElementById("registerButton").addEventListener("click", function () {
+                    sessionDestroy();
+                    window.location.href = "registration.html";
+                });
             }
             function stopVideoStream() {
                 if (video) {
@@ -253,21 +268,8 @@ document.getElementById('camera').style.display = 'none'
                 try {
                     // Capture the user's face from the video stream
                     loadingOverlay.style.display = 'flex'; // Show loading overlay
-                    const email = sessionStorage.getItem('email')
                     const finalScore = calculateScore();
-                    fetch('../backend/result.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ email, score })
-                    })
-                        .then(response => response.text())
-                        .then(data => {
-                            console.log(data); // "Result saved successfully!"
-                            // alert("Your result has been saved.");
-                        })
-                        .catch(error => console.error('Error saving result:', error));
+                    
                     const options = new faceapi.TinyFaceDetectorOptions({
                         inputSize: 416, // Higher size for better accuracy
                         scoreThreshold: 0.5 // Confidence threshold
@@ -287,6 +289,26 @@ document.getElementById('camera').style.display = 'none'
                         loadingOverlay.style.display = 'none'; // Show loading overlay
 document.getElementById('terminationModal').style.display = 'block';
                         return;
+                    }else if(canvasDetections.length > 1){
+                        showModal("Multiple faces detected. Please ensure only one face is visible.");
+                        loadingOverlay.style.display = 'none';
+                        document.getElementById('terminationModal').style.display = 'block';
+
+                    }
+                    else{
+                        fetch('../backend/update_result.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, score })
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data); // "Result saved successfully!"
+                            // alert("Your result has been saved.");
+                        })
+                        .catch(error => console.error('Error saving result:', error));
                     }
 
                     // Get the stored image descriptor
@@ -303,10 +325,10 @@ document.getElementById('terminationModal').style.display = 'block';
                     prevButton.style.display = 'none';
                         showResult();
                     } else {
-                        showModal('Login failed. Faces do not match.');
+                        showModal('Verification failed. Faces do not match.');
                     }
                 } catch (error) {
-                    console.error('Error during login:', error);
+                    console.error('Error during Facial verification:', error);
                 }
             });
             function compareFaceDescriptors(descriptor1, descriptor2) {
@@ -528,6 +550,8 @@ document.getElementById('showMessageModal').style.display = 'flex';
                 console.log("Periodic check passed.");
             }
         };
+        console.log(result);
+        
 if(!result){
 
     setInterval(periodicCheck, 10000);
@@ -558,10 +582,6 @@ if(!result){
                 console.error("Network error:", error);
             });
     }
-    document.getElementById('registerButton').addEventListener('click', ()=>{
-    sessionDestroy();
-    window.location.href = 'registration.html'
-  })
   function sessionDestroy(){
     sessionStorage.clear();
   }
